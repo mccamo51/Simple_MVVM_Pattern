@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mvvm_test/model_view/postView-modle.dart';
 import 'package:provider/provider.dart';
 
+import 'detailsScreen.dart';
+
 class MainPage extends StatelessWidget {
   const MainPage({Key? key}) : super(key: key);
 
@@ -34,14 +36,23 @@ _ui(PostViewModel viewModel) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  viewModel.postList[index].title!,
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                ListTile(
+                  onTap: () {
+                    viewModel.setPostItem(viewModel.postList[index]);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DetailsScreen()));
+                  },
+                  title: Text(
+                    viewModel.postList[index].title!,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                Text(viewModel.postList[index].body!)
+                  subtitle: Text(viewModel.postList[index].body!),
+                )
               ],
             );
           },

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:mvvm_test/model/postModel.dart';
@@ -11,6 +12,31 @@ class PostService {
       var response = await http.get(url);
       if (response.statusCode == 200) {
         var resonseData = postModelFromJson(response.body);
+
+        return Success(code: response.statusCode, response: resonseData);
+      }
+      return Failed(code: response.statusCode, response: "Error Request");
+    } on HttpException {
+      return Failed(code: 110, response: "Invalid");
+    } on TimeoutException {
+      return Failed(code: 112, response: "Timeout");
+    } on SocketException {
+      return Failed(code: 113, response: "No Internet");
+    } on FormatException {
+      return Failed(code: 113, response: "Format Error");
+    } on TypeError {
+      return Failed(code: 113, response: "Format Error");
+    } catch (e) {
+      return Failed(code: 111, response: "Unknown Error");
+    }
+  }
+
+  static Future<Object> getPostDetails(String id) async {
+    try {
+      var url = Uri.parse("https://jsonplaceholder.typicode.com/posts/$id");
+      var response = await http.get(url);
+      if (response.statusCode == 200) {
+        var resonseData = jsonDecode(response.body);
 
         return Success(code: response.statusCode, response: resonseData);
       }

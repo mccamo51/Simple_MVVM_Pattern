@@ -6,11 +6,13 @@ import 'package:mvvm_test/services/serverOperation.dart';
 class PostViewModel extends ChangeNotifier {
   bool _isLoading = false;
   List<PostModel> _postList = [];
+  PostModel _postModel = PostModel();
   PostError _postError = PostError();
 
   bool get loading => _isLoading;
   List<PostModel> get postList => _postList;
   PostError get postError => _postError;
+  PostModel get postItem => _postModel;
 
   PostViewModel() {
     getPost();
@@ -23,6 +25,10 @@ class PostViewModel extends ChangeNotifier {
 
   setPostList(List<PostModel> list) {
     _postList = list;
+  }
+
+  setPostItem(PostModel postModel){
+    _postModel = postModel;
   }
 
   setPostError(PostError postError) {
@@ -42,4 +48,11 @@ class PostViewModel extends ChangeNotifier {
     }
     setLoading(false);
   }
+
+  // getDetails(String id)async{
+  //   var response = await PostService.getPostDetails(id);
+  //   if(response is Success){
+  //     setPostItem(response.response);
+  //   }
+  // }
 }
